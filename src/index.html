@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="test">
+        <div id="t1" class="red" style="border: 1px solid black;">11</div>
+        <div id="t2"> 22</div>
+        <div id="t3" class="red">33</div>
+    </div>
+    </div>
+
+    <script>
+        window.dom = {
+            find(selector, scope) {
+                return (scope || document).querySelectorAll(selector);
+            },
+            style(node, name, value) {
+                if (arguments.length === 3) {
+                    //dom.style(div,'color','red')
+                    node.style[name] = value
+                } else if (arguments.length === 2) {
+                    if (typeof name === 'string') {
+                        //dom.style(div,'color')
+                        return node.style[name]
+                    } else if (name instanceof Object) {
+                        //dom.style(div,{'color':'red'})
+                        const object = name
+                        for (let key in object) {
+                            //key:color,border
+                            //node.style.color
+                            //node.style.border
+                            node.style[key] = object[key]
+                        }
+                    }
+                }
+            },
+            each(nodeList, fn) {
+                for (let i = 0; i < nodeList.length; i++) {
+                    fn.call(null, nodeList[i])
+                }
+            }
+
+        }
+
+
+        const div = dom.find('#test>.red')[0]
+        dom.style(div, 'color', 'yellow')
+
+        const divList = dom.find('.red')
+        dom.each(divList, (n)=> console.log(n))
+
+    </script>
+
+</body>
+
+</html>
